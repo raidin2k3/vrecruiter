@@ -9,14 +9,14 @@ export default function Home() {
       <header className="bg-[#003399] text-white py-3">
         <div className="container mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center">
-            <Image
+            {/* <Image
               src=""
               alt="Add Image"
               width={120}
               height={40}
               className="mr-4"
               priority
-            />
+            /> */}
             <h1 className="text-3xl font-bold">Talent Assist</h1>
           </div>
         </div>
