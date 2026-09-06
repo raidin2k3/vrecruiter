@@ -7,43 +7,28 @@ interface ResultsDisplayProps {
 }
 
 export default function ResultsDisplay({ results, isLoading }: ResultsDisplayProps) {
-  const displayResults = () => {
-    if (!results) return null;
-    
+  const displayResults = (): string => {
+    if (!results) return "No content to display.";
+
     try {
-      // Parse the nested JSON structure
-      // const parsed = typeof results === 'string' ? JSON.parse(results) : results;
-      
-      let content = results;
-      
-      // If we have raw content directly
-      // if (parsed.raw) {
-      //   content = parsed.raw;
-      // }
-      // // If we have tasks_output, get the last task's raw output
-      // else if (parsed.tasks_output && parsed.tasks_output.length > 0) {
-      //   const lastTask = parsed.tasks_output[parsed.tasks_output.length - 1];
-      //   content = lastTask.raw;
-      // }
-      // // If we have a result property
-      // else if (parsed.result) {
-      //   const innerResult = typeof parsed.result === 'string' ? 
-      //     JSON.parse(parsed.result) : parsed.result;
-      //   content = innerResult.raw || innerResult;
-      // }
-      
-      // // Check if content is empty or contains only brackets/empty objects
-      // if (!content || content === '[]' || content === '{}' || content === '[[]]') {
-      //   return "No relevant matches found for the candidate selection criteria provided. Please try adjusting your requirements or upload different resumes.";
-      // }
-      
-      return content;
-      
+      const content = results;
+
+      if (typeof content === "string") {
+        return content || "No content to display.";
+      }
+
+      if (content && typeof content === "object" && "result" in content) {
+        return content.result || "No content to display.";
+      }
+
+      return String(content);
     } catch (e) {
       console.error('Error parsing results:', e);
       return "No relevant matches found for the candidate selection criteria provided. Please try adjusting your requirements or upload different resumes.";
     }
   };
+
+  const markdown = displayResults();
 
   return (
     <div className="h-full bg-white p-6 rounded-lg border border-[#009999] shadow-md overflow-y-auto">
@@ -64,7 +49,7 @@ export default function ResultsDisplay({ results, isLoading }: ResultsDisplayPro
               },
             }}
           >
-            {displayResults()|| "No content to display."}
+            {markdown}
           </Markdown>
         </div>
       ) : (
@@ -73,5 +58,3 @@ export default function ResultsDisplay({ results, isLoading }: ResultsDisplayPro
     </div>
   )
 }
-  
-  
